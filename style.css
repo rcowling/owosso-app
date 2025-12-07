@@ -1,0 +1,158 @@
+:root {
+        --ion-font-family:  'Lato', sans-serif;
+        --ion-color-favorite: #CC6131;
+        --ion-color-favorite-contrast: #FFFFFF;
+        --ion-color-header: #285756;
+        --ion-color-white: #FFFFFF;
+        --ion-color-locate: #FFFFFF;
+        --ion-color-green:  #69bb7b;
+        --ion-color-red:  #e00000;
+        --ion-color-gray: #363636;
+        --ion-color-tour: #4B006E;
+      }
+
+      #viewDiv {
+        text-align: center;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+
+      .ion-color-favorite {
+        --ion-color-base: var(--ion-color-favorite);      
+      }
+
+      .ion-color-tour {
+        --ion-color-base: var(--ion-color-tour);      
+      }
+
+      .ion-color-white {
+        --ion-color-base: var(--ion-color-white);      
+      }
+
+      .ion-color-header {
+        --ion-color-base: var(--ion-color-header);        
+      }
+
+      .ion-color-locate {
+        --ion-color-base: var(--ion-color-locate);
+      }
+
+      .ion-color-green {
+        --ion-color-base: var(--ion-color-green); 
+      }
+
+      .ion-color-red {
+        --ion-color-base: var(--ion-color-red);       
+      }
+
+      .ion-color-gray {
+        --ion-color-base: var(--ion-color-gray);
+      }
+
+     /* .ion-color-primary {
+        --ion-color-base:  var(--ion-color-primary, #363636)!important;
+      }
+*/
+      ion-content ion-toolbar {
+        margin: 10px 0;
+      }
+      
+      ion-range {
+        --knob-box-shadow:  0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
+        --bar-background: #83A1A0;
+        --bar-background-active: #d7d8da;
+        --bar-height: 8px;
+        --bar-border-radius: 8px;
+        --knob-background: #ffffff;
+        --knob-size: 40px;
+        --pin-background: #ffafcc;
+        --pin-color: #fff;        
+        width: 80%;
+        position:  absolute;
+        left:  30px;               
+      }
+
+      .media-label {
+        text-align: center;        
+        font-size: 20px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+
+      .esri-view .esri-view-surface--inset-outline:focus::after {
+        outline: none !important;
+      } 
+    
+      .swiper-slide {
+        display: block;
+        margin-top: 56px;
+      }
+
+      .swiper-slide h2 {
+        margin-top: 2.8rem;
+      }
+
+      .swiper-slide img {
+        max-height: 50%;
+        max-width: 80%;
+        margin: 60px 0 40px;
+        pointer-events: none;
+      }      
+
+      .green {
+        --background: #5ca56c;
+        height: 120px;
+        width: 120px;        
+      }
+
+       .blue {
+        --background: #5ca56c;
+        --color: #3880ff;              
+      } 
+
+      .item-background-color{
+        --ion-item-background:#ffffff;
+      } 
+  
+      #micicon {
+        width: 100px;
+        height: 100px;
+      }  
+
+      #splashText {
+        font-size: 18px;
+        color: white;
+      } 
+      /* CSS specific to iOS devices */ 
+      @supports (-webkit-touch-callout: none) {
+        ion-range {
+          padding-top: 25px;
+        }  
+      }  
+
+      b {
+        font-weight: 500;
+      }
+
+      p {
+        padding: 0 40px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--ion-color-step-600, #60646b);
+      }
+
+      p b {
+        color: var(--ion-text-color, #000000);
+      }
+
+      @-webkit-keyframes pulse { 
+        70% { 
+          box-shadow: 0 0 0 50px rgba(#5a99d4, 0);
+        }
+        100% { 
+          box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
+        }
+      }

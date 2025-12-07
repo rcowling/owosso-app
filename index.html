@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#285756">
+    <title>HGIS Mobile Application</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-request@4.2.3/dist/bundled/request.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-feature-service@4.0.6/dist/bundled/feature-service.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@3.0.5/dist/linkify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/linkify-html@3.0.5/dist/linkify-html.min.js"></script>
+    <script src="https://js.arcgis.com/4.30/"></script>
+</head>
+
+<body>
+    <ion-app>
+        <ion-header>
+            <ion-toolbar id="mainToolbar">
+                <ion-buttons slot="start">
+                    <ion-img src="assets/dmilogo.png" id="app-logo" style="width: 60px; height: 60px;"></ion-img>
+                </ion-buttons>
+                <ion-buttons slot="end">
+                    <ion-text color="white">
+                        <ion-menu-button auto-hide="false" id="menuBtn"></ion-menu-button>
+                    </ion-text>
+                </ion-buttons>
+                <ion-popover trigger="menuBtn" dismiss-on-select="true">
+                    <ion-content class="ion-padding">
+                        <ion-list id="linkList">
+                            <!-- Links will be dynamically added here -->
+                        </ion-list>
+                    </ion-content>
+                </ion-popover>
+                <ion-text color="white">
+                    <ion-title id="appTitle">CDMI Mobile Application</ion-title>
+                </ion-text>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-tabs id="footer">
+            <ion-tab tab="home">
+                <ion-header translucent>
+                    <ion-toolbar>
+                        <ion-title>Explore</ion-title>
+                    </ion-toolbar>
+                </ion-header>
+                <ion-content [fullscreen]="true">
+                    <ion-modal id="splashModal">
+                        <ion-header>
+                            <ion-toolbar id="splashNavBar">
+                                <ion-text color="white">
+                                    <ion-title id="splashTitle">CDMI Mobile App Splash Screen</ion-title>
+                                </ion-text>
+                                <ion-buttons slot="end">
+                                    <ion-text color="white">
+                                        <ion-button id="splashModalClose">Close</ion-button>
+                                    </ion-text>
+                                </ion-buttons>
+                            </ion-toolbar>
+                        </ion-header>
+                        <ion-content class="ion-padding">
+                            <img src="assets/cdmibanner.png" / id="splashImg">
+                            <div id="splashText">Splash text here</div>
+                        </ion-content>
+                    </ion-modal>
+                    <div id="viewDiv"></div>
+                    <ion-range value="100" mode="md" id="slider"></ion-range>
+                    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+                        <ion-fab-button color="locate" id="geolocation">
+                            <ion-icon name="locate-sharp" id="gpsicon"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
+                </ion-content>
+            </ion-tab>
+
+            <ion-tab tab="maps">
+                <ion-header translucent>
+                    <ion-toolbar>
+                        <ion-title>Maps</ion-title>
+                    </ion-toolbar>
+                </ion-header>
+
+                <ion-content fullscreen class="ion-padding" id="mapcontent">
+                    Maps
+                </ion-content>
+            </ion-tab>
+
+            <ion-tab tab="stories">
+                <ion-content fullscreen class="ion-padding" scroll-y="true">
+                    <ion-loading id="loadSubmit" trigger="open-loading" message="Submitting your story, please wait..." duration="30000"></ion-loading>
+                    <!-- Slider main container -->
+                    <div class="swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+                            <div class="swiper-slide">
+                                <center>
+                                    <h2>Share your Story</h2>
+                                </center>
+                                <p>
+                                    Select where you want to <b>Share a Story.</b>
+                                </p>
+                                <ion-button expand="block" id="locOpt">At my current location<ion-icon slot="start" name="locate-outline"></ion-icon></ion-button>
+                                <ion-button expand="block" id="mapOpt">From a location on the map<ion-icon slot="start" name="location-outline"></ion-icon></ion-button>
+                                <!--  <ion-button fill="clear" id="nextBtn1">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button> -->
+                                <center>
+                                    <p>Step 1 of 4</p>
+                                </center>
+                                <ion-progress-bar id="bar1" value="0.25"></ion-progress-bar>
+                            </div>
+                            <div class="swiper-slide">
+                                <h2>Capture photos, audio and video related to your story.</h2>
+                                <input type="file" id="medInput" accept="image/*, video/*, audio/*" capture="filesystem" style="display: none">
+                                <ion-button class="storybutton" expand="full" size="large" id="takeMed">Upload Media<ion-icon slot="end" name="folder-outline"></ion-icon></ion-button>
+                                <input type="file" id="picInput" accept="image/*" capture="filesystem" style="display: none">
+                                <ion-button color="primary" expand="full" size="large" id="takePic">Take a Picture <ion-icon slot="end" name="camera-outline"></ion-icon></ion-button>
+                                <input type="file" id="audInput" accept="audio/*" capture="microphone" style="display: none">
+                                <ion-button color="primary" expand="full" size="large" id="takeAud">Record Audio <ion-icon slot="end" name="mic-outline"></ion-icon></ion-button>
+                                <input type="file" id="vidInput" accept="video/*" capture="camcorder" style="display: none">
+                                <ion-button color="primary" expand="full" size="large" id="takeVid">Record a Video <ion-icon slot="end" name="videocam-outline"></ion-icon></ion-button>
+                                <p style="color: black">*Max video length is 15 seconds.</p>
+                                <center>
+                                    <ion-button fill="clear" id="backBtn1">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
+                                    <ion-button fill="clear" id="nextBtn2">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+                                    <p>Step 2 of 4</p>
+                                </center>
+                                <ion-progress-bar id="bar2" value="0.50"></ion-progress-bar>
+                            </div>
+                            <div class="swiper-slide">
+                                <center>
+                                    <h2>Story Text</h2>
+                                </center>
+                                <ion-list lines="full" class="ion-no-margin">
+                                    <ion-item>
+                                        <ion-label position="floating">Story Title<ion-text color="danger">*</ion-text></ion-label>
+                                        <ion-input id="userTitle" required="true" placeholder="A short title for your story."></ion-input>
+                                        <ion-text color="danger" style="display: none" id="titleError">Please enter a story title</ion-text>
+                                    </ion-item>
+                                    <ion-item>
+                                        <ion-label position="floating">Story Timeframe<ion-text color="danger">*</ion-text></ion-label>
+                                        <ion-input id="userDate" class="ion-invalid" required pattern="\d{4}-\d{2}-\d{2}" placeholder="1922 or 1920-1930 or 05/03/1932"></ion-input>
+                                        <ion-text color="danger" style="display: none" id="dateError">Please enter a date in one of the specified formats.</ion-text>
+                                    </ion-item>
+                                </ion-list>
+                                <ion-item>
+                                    <ion-label position="floating">Story Text (optional)</ion-label>
+                                    <ion-textarea rows="6" cols="20" id="userDesc" placeholder="Type your story here. This is optional. In the previous section you had the option to record or upload video or audio of your story."></ion-textarea>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">Your Name (optional)</ion-label>
+                                    <ion-input id="userName" placeholder="Enter your name here."></ion-input>
+                                </ion-item>
+                                </ion-list>
+                                <center>
+                                    <ion-button fill="clear" id="backBtn2">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
+                                    <ion-button fill="clear" id="nextBtn3">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+                                    <p>Step 3 of 4</p>
+                                </center>
+                                <ion-progress-bar value="0.75" id="bar3"></ion-progress-bar>
+                            </div>
+                            <div class="swiper-slide">
+                                <center>
+                                    <h2>Submit Story</h2>
+                                </center>
+                                <p><b>NOTE: This content will be publicly visible on the internet. You won’t be able to update or edit your submission so please double check your entries before submitting.</b></p>
+                                <center>
+                                    <ion-button fill="clear" id="backBtn3">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
+                                    <ion-button fill="clear" type="submit" id="submitBtn">Submit</ion-button>
+                                    <p>Step 4 of 4</p>
+                                </center>
+                                <ion-progress-bar value="1" id="bar4"></ion-progress-bar>
+                            </div>
+                            <div class="swiper-slide">
+                                <center><ion-icon name="checkmark-circle" style="font-size: 84px" id="submitIcon"></ion-icon></center>
+                                <h2>
+                                    <center>Story Submitted!</center>
+                                </h2>
+                                <p><b>Thank you for your submission. Your story will now appear on the map.</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </ion-content>
+            </ion-tab>
+            <ion-tab-bar slot="bottom">
+                <ion-tab-button tab="home">
+                    <ion-label>Explore</ion-label>
+                    <ion-icon name="location-outline" size="large"></ion-icon>
+                </ion-tab-button>
+                <ion-tab-button tab="maps">
+                    <ion-label>Maps</ion-label>
+                    <ion-icon name="map-outline" size="large"></ion-icon>
+                    <ion-badge id="mapcount">6</ion-badge>
+                </ion-tab-button>
+                <ion-tab-button tab="stories" size="large">
+                    <ion-label>Share a Story</ion-label>
+                    <ion-icon name="book-outline"></ion-icon>
+                </ion-tab-button>
+            </ion-tab-bar>
+        </ion-tabs>
+        </ion-content>
+        <ion-modal id="storyModal">
+            <ion-header>
+                <ion-toolbar id=storyToolbar>
+                    <ion-text color="white">
+                        <ion-title id="storymodaltitle">Story</ion-title>
+                    </ion-text>
+                    <ion-buttons slot="end">
+                        <ion-text color="white">
+                            <ion-button id="modalClose">Close</ion-button>
+                        </ion-text>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-card>
+                    <img src="" id="storyimg" />
+                    <ion-card-header>
+                        <ion-card-subtitle id="subtitle"></ion-card-subtitle>
+                        <ion-card-title id="storytitle"></ion-card-title>
+                    </ion-card-header>
+                    <ion-card-subtitle id="storyauthor" style="margin-left: 15px;"></ion-card-subtitle>
+                    <ion-card-content id="storydesc">
+                    </ion-card-content>
+                    <center><ion-label id="piclabel" class="media-label">Pictures</ion-label></center>
+                    <div id="pictures"></div>
+                    <center><ion-label id="vidlabel" class="media-label">Videos</ion-label></center>
+                    <div id="videos"></div>
+                    <center><ion-label id=audlabel class="media-label">Audio</ion-label></center>
+                    <div id="sound"></div>
+                </ion-card>
+            </ion-content>
+        </ion-modal>
+    </ion-app>
+    <script src="app.js"></script>
+</body>
+
+</html>
