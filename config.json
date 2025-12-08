@@ -11,8 +11,8 @@
     "textColor": "#ffffff"  
   },
   "layers": {
-    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
-    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer/0"
+    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Index_Map/FeatureServer/0",
+    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Index_Map/FeatureServer/0"
   },
   "markers": {
     "storyMarkerUrl": "assets/marker_story.png",
@@ -38,7 +38,7 @@
   "footer": {
     "backgroundColor": "#2E596A",
     "iconColorInactive": "#ffffff",
-    "iconColorActive": "#0054e9"
+    "iconColorActive": "#b7ca6c"
   },
   "mapCountIcon": {
     "backgroundColor": "#59B397",
@@ -75,20 +75,20 @@
   "transparencySlider": {
     "barColor": "#83A1A0",    
     "barColorActive": "#d7d8da",
-    "barColorInactive": "#83A1A0",
+    "barColorInactive": "#59B397",
     "handleColor": "#ffffff"
   },
   "links": [
     {
-      "text": "About the project",
-      "url": "https://www.keweenawhistory.com/about-the-project.html"
+      "text": "City of Owosso",
+      "url": "https://www.ci.owosso.mi.us/"
     },
     {
-      "text": "About the maps",
+      "text": "Other Link Here",
       "url": "https://www.keweenawhistory.com/about-the-maps.html"
     },
     {
-      "text": "Meet the team",
+      "text": "other link here if needed",
       "url": "https://www.keweenawhistory.com/meet-the-team.html"
     }
   ]  
