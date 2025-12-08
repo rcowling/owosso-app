@@ -1,14 +1,14 @@
 {
   "map": {
     "extent": [-84.1883483,42.9982376],
-    "basemap": "topo",
+    "basemap": "satellite",
     "zoom": 14
   },
   "navbar": {
     "title": "Owosso Time Traveler",
     "backgroundColor": "#2E596A",
     "logo": "assets/logo.png",
-    "textColor": "#59B397"  
+    "textColor": "#ffffff"  
   },
   "layers": {
     "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
@@ -21,13 +21,13 @@
   },
   "splashScreen": {
     "visible": true,
-    "title": "HGIS Mobile App",
+    "title": "Owosso Time Traveler",
     "titleColor": "#ffffff",
-    "backgroundColor": "#285756",
+    "backgroundColor": "#59B397",
     "textColor": "#ffffff",
-    "paragraphText": "This is an HGIS Mobile app example. Put information about your app here. HTML tags are accepted.",
-    "image": "assets/cdmibanner.png",
-    "navBarColor": "#363636",
+    "paragraphText": "Welcome to the Owosso Time Traveler. Put information about your app here. HTML tags are accepted.",
+    "image": "assets/logo.png",
+    "navBarColor": "#2E596A",
     "navBarTextColor": "#ffffff",
     "closeTextColor": "#ffffff"
   }, 
@@ -36,12 +36,12 @@
     "backgroundColor": "#ffffff"
   },
   "footer": {
-    "backgroundColor": "#ffffff",
-    "iconColorInactive": "#5f5f5f",
+    "backgroundColor": "#2E596A",
+    "iconColorInactive": "#ffffff",
     "iconColorActive": "#0054e9"
   },
   "mapCountIcon": {
-    "backgroundColor": "#0054e9",
+    "backgroundColor": "#59B397",
     "textColor": "#fff"
   },
   "gpsButton": {
