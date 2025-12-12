@@ -596,6 +596,7 @@ fetch('config.json')
                     const desc = $('#userDesc').val();
                     const name = $('#userName').val();
                     let date = $('#userDate').val();
+                    const source = $('#source').val();
 
                     const yearRGEX = /^\d{4}$/;
                     const rangeRGEX = /^\d{4}-\d{4}$/;
@@ -629,6 +630,7 @@ fetch('config.json')
                             name: name,
                             userdate: date,
                             map: currentMapUrl,
+                            source: source
                         },
                         geometry: {
                             x: lon,
@@ -764,7 +766,7 @@ fetch('config.json')
                 // Layer for the story points
                 const storyLayer = new FeatureLayer({
                     url: config.layers.storiesLayerUrl,
-                    outFields: ["title", "description", "name", "userdate", "objectid", "globalid", "map"], // Return all fields so it can be queried client-side        
+                    outFields: ["title", "description", "name", "userdate", "objectid", "globalid", "map", "source"], // Return all fields so it can be queried client-side        
                     renderer: storiesRenderer,
                     definitionExpression: "flag IS NULL",
                     visible: true

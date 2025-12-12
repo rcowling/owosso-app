@@ -11,7 +11,7 @@
     "textColor": "#ffffff"  
   },
   "layers": {
-    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Index_Map/FeatureServer/0",
+    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Story_Submissions/FeatureServer/0",
     "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Index_Map/FeatureServer/0"
   },
   "markers": {
