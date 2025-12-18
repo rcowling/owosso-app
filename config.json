@@ -25,8 +25,8 @@
     "titleColor": "#ffffff",
     "backgroundColor": "#59B397",
     "textColor": "#ffffff",
-    "paragraphText": "Welcome to the Owosso Time Traveler. Put information about your app here. HTML tags are accepted.",
-    "image": "assets/logo.png",
+    "paragraphText": "<span style='font-size: 20px; font-weight: bold;'>What is the Owosso Time Traveler?</span></b><br><br>The Owosso Time Traveler is created and maintained by the Owosso Historical Commission,     with the help of citizen historians like you. It contains archival material from the Owosso Historical Commission, Shiawassee District Library, and private collections, brought together and connected in space and time using historic maps, photographs, and documents. This interactive historical map and digital archive covers Owosso from the mid-1800s to the present day and will continue to grow into the future. Please explore and contribute to our people-powered platform by sharing your historical photos, stories, and documents.",
+    "image": "assets/owosso-logo.png",
     "navBarColor": "#2E596A",
     "navBarTextColor": "#ffffff",
     "closeTextColor": "#ffffff"
