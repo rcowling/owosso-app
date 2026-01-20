@@ -13,7 +13,7 @@ window.Ionic = {
   searchModal.breakpoints = [0, 0.25, 0.5, 0.75];
 
   searchBar.addEventListener('click', () => {
-   // searchModal.setCurrentBreakpoint(0.75);
+     searchModal.setCurrentBreakpoint(0.75);
   });
 
 // Fetch the config.json file
@@ -1229,7 +1229,7 @@ fetch('config.json')
                     .then((results) => {
                       // --- Zoom to results ---
                       if (results.features.length > 0) {
-                        searchModal.setCurrentBreakpoint(0.50);
+                        //searchModal.setCurrentBreakpoint(0.50);
                         const objectIds = results.features.map(f => f.attributes.objectid);
                         return owossoLayer.queryExtent({ objectIds })
                           .then((extent) => {
