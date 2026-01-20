@@ -6,6 +6,16 @@ window.Ionic = {
     },
 };
 
+  var searchModal = document.getElementById('searchModal');
+  var searchBar = document.querySelector('ion-searchbar');
+  const resultsList = document.getElementById("resultsList");
+
+  searchModal.breakpoints = [0, 0.25, 0.5, 0.75];
+
+  searchBar.addEventListener('click', () => {
+   // searchModal.setCurrentBreakpoint(0.75);
+  });
+
 // Fetch the config.json file
 fetch('config.json')
     .then(response => response.json())
@@ -109,9 +119,10 @@ fetch('config.json')
                 "esri/widgets/Track", "esri/Graphic",
                 "esri/layers/GraphicsLayer",
                 "esri/geometry/support/webMercatorUtils",
+                "esri/core/reactiveUtils",
                 "esri/geometry/Point"
             ],
-            function(esriConfig, Map, MapView, FeatureLayer, TileLayer, WebTileLayer, Track, Graphic, GraphicsLayer, webMercatorUtils, Point) {
+            function(esriConfig, Map, MapView, FeatureLayer, TileLayer, WebTileLayer, Track, Graphic, GraphicsLayer, webMercatorUtils, reactiveUtils, Point) {
                 function validateFile(file) {
                     const video = document.createElement('video');
                     video.preload = 'metadata';
@@ -588,6 +599,10 @@ fetch('config.json')
                     }
                 }
 
+                $("#searchTab").click(function() {
+                    searchModal.isOpen = true;
+                });
+
                 // when the user clicks the story submit button
                 $("#submitBtn").click(function() {
                     submitting.isOpen = true;
@@ -772,11 +787,26 @@ fetch('config.json')
                     visible: true
                 });
 
+                // Layer for the City of Owosso Point Data
+                const owossoLayer = new FeatureLayer({
+                    url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_App_Data/FeatureServer/0",
+                    outFields: ["title", "author", "date_", "description", "source", "photos"], // Return all fields so it can be queried client-side        
+                    renderer: storiesRenderer,                    
+                    visible: true,
+                    id: "owossoPoints",
+                    popupEnabled: true
+                });
+
+               // popup template for the owossolayer
+                owossoLayer.popupTemplate = {
+                  content: "test"
+                };
+
                 const graphicsLayer = new GraphicsLayer();
 
                 const map = new Map({
                     basemap: config.map.basemap, // Basemap layer service
-                    layers: [indexLayer, storyLayer, graphicsLayer]
+                    layers: [indexLayer, owossoLayer, graphicsLayer]
                 });
 
                 const view = new MapView({
@@ -803,6 +833,48 @@ fetch('config.json')
                         enableHighAccuracy: true
                     }
                 });
+
+                reactiveUtils.watch(
+                  () => view.popup.selectedFeature,
+                  (graphic) => {
+                    if (graphic && graphic.layer.id === "owossoPoints") {
+                      const attributes = graphic.attributes;
+                      openModal(attributes);
+                    }
+                  }
+                );
+
+                const owossoModal = document.getElementById("owossoModal");
+
+                async function openModal(attributes) {
+                  document.getElementById("modalTitle").textContent = attributes.title || "Untitled";
+                  document.getElementById("modalAuthor").textContent = `${attributes.author || ""} (${attributes.date_ || "undated"})`;
+                  document.getElementById("modalDescription").innerHTML = attributes.description || "No description available.";
+                  document.getElementById("modalSource").textContent = attributes.source || "";
+
+                  const gallery = document.getElementById("photoGallery");
+                  gallery.innerHTML = "";
+
+                  const baseUrl = "https://geospatialresearch.mtu.edu/owosso/";
+                  const photos = attributes.photos ? attributes.photos.split(",").map(p => p.trim()) : [];
+
+                  if (photos.length) {
+                    photos.forEach(photo => {
+                      const img = document.createElement("img");
+                      img.src = `${baseUrl}${photo}`;
+                      img.alt = attributes.title;
+                      gallery.appendChild(img);
+                    });
+                  } else {
+                    gallery.innerHTML = "<p><em>No photos available.</em></p>";
+                  }
+
+                  await owossoModal.present();
+                }
+
+                window.closeModal = async function () {
+                  await owossoModal.dismiss();
+                };
 
                 let highlightSelect;
                 // once the view becomes ready
@@ -1135,6 +1207,70 @@ fetch('config.json')
                     });
                 });
 
+              searchBar.addEventListener("ionInput", (ev) => {
+                  console.log("input");
+                  const value = ev.target.value?.trim();
+                  if (!value) {
+                    resultsList.innerHTML = "";
+                    layerView.filter = null; // reset filter if needed
+                    return;
+                  }
+
+                  // --- Query layer for matches ---
+                  const safeValue = value.replace(/'/g, "''"); // escape single quotes
+                  const query = owossoLayer.createQuery();
+                  query.where = `(UPPER(title) LIKE '%${safeValue.toUpperCase()}%')`;
+                  query.outFields = ["title", "date_", "objectid", "description", "photos"];
+                  query.returnGeometry = true;
+
+                  console.log("WHERE:", query.where);
+
+                  owossoLayer.queryFeatures(query)
+                    .then((results) => {
+                      // --- Zoom to results ---
+                      if (results.features.length > 0) {
+                        searchModal.setCurrentBreakpoint(0.50);
+                        const objectIds = results.features.map(f => f.attributes.objectid);
+                        return owossoLayer.queryExtent({ objectIds })
+                          .then((extent) => {
+                            view.goTo(extent.extent.expand(1.2));
+                            return results; // pass results to next then()
+                          });
+                      } else {
+                        return results; // no features found
+                      }
+                    })
+                    .then((results) => {
+                      // --- Populate the Ion List ---
+                      resultsList.innerHTML = ""; // clear previous
+                      if (results.features.length > 0) {
+                        results.features.forEach(f => {
+                          const { title, date_ } = f.attributes;
+                          const item = document.createElement("ion-item");
+                          item.textContent = `${title} (${date_ || "n.d."})`;
+
+                          // Optional: zoom to this feature on click
+                          item.addEventListener("click", () => {
+                            view.goTo(f.geometry);
+                            view.popup.open({
+                              features: [f],
+                              location: f.geometry
+                            });
+                          });
+
+                          resultsList.appendChild(item);
+                        });
+                      } else {
+                        const noRes = document.createElement("ion-item");
+                        noRes.textContent = "No results found.";
+                        resultsList.appendChild(noRes);
+                      }
+                    })
+                    .catch((err) => {
+                      console.error("Query error:", err);
+                    });
+                });
+
                 storyModal.addEventListener('didDismiss', (ev) => {
                     storyModal.isOpen = false;
                     // if the storyModal is closed, return the window URL to normal
@@ -1152,8 +1288,16 @@ fetch('config.json')
                     splashModal.isOpen = false;
                 });
 
+                searchModal.addEventListener('didDismiss', (ev) => {
+                    searchModal.isOpen = false;
+                });
+
                 $("#splashModalClose").click(function() {
                     splashModal.isOpen = false;
+                });
+
+                 $("#searchModalClose").click(function() {
+                    searchModal.isOpen = false;
                 });
             });
     }); // end json config

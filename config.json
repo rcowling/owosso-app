@@ -15,9 +15,9 @@
     "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Owosso_Time_Traveler_Index_Map/FeatureServer/0"
   },
   "markers": {
-    "storyMarkerUrl": "assets/marker_story.png",
-    "storyMarkerWidth": "20px",
-    "storyMarkerHeight": "20px"
+    "storyMarkerUrl": "assets/markers/marker_picture_black.svg",
+    "storyMarkerWidth": "25px",
+    "storyMarkerHeight": "25px"
   },
   "splashScreen": {
     "visible": true,

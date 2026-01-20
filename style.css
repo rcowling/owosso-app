@@ -8,7 +8,7 @@
         --ion-color-green:  #69bb7b;
         --ion-color-red:  #e00000;
         --ion-color-gray: #363636;
-        --ion-color-tour: #4B006E;
+        --ion-color-tour: #59B397;
       }
 
       #viewDiv {
@@ -20,6 +20,7 @@
         right: 0;
       }
 
+   
       .ion-color-favorite {
         --ion-color-base: var(--ion-color-favorite);      
       }
@@ -147,6 +148,10 @@
       p b {
         color: var(--ion-text-color, #000000);
       }
+
+      .esri-ui .esri-popup  {
+        display:  none !important;
+      }  
 
       @-webkit-keyframes pulse { 
         70% { 

@@ -77,6 +77,25 @@
                         </ion-content>
                     </ion-modal>
                     <div id="viewDiv"></div>
+                     <!-- Ionic modal placeholder -->
+                    <ion-modal id="owossoModal">
+                      <ion-header>
+                        <ion-toolbar color="tour">
+                          <ion-title id="modalTitle"></ion-title>
+                          <ion-buttons slot="end">
+                            <ion-button onclick="closeModal()">Close</ion-button>
+                          </ion-buttons>
+                        </ion-toolbar>
+                      </ion-header>
+
+                      <ion-content class="ion-padding">
+                        <h3 id="modalAuthor"></h3>
+                        <p id="modalDescription"></p>
+                        <p><strong>Source:</strong> <span id="modalSource"></span></p>
+
+                        <div class="photo-gallery" id="photoGallery"></div>
+                      </ion-content>
+                    </ion-modal>
                     <ion-range value="100" mode="md" id="slider"></ion-range>
                     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
                         <ion-fab-button color="locate" id="geolocation">
@@ -206,7 +225,11 @@
                 <ion-tab-button tab="maps">
                     <ion-label>Maps</ion-label>
                     <ion-icon name="map-outline" size="large"></ion-icon>
-                    <ion-badge id="mapcount">6</ion-badge>
+                    <ion-badge id="mapcount">0</ion-badge>
+                </ion-tab-button>
+                <ion-tab-button tab="search" id="searchTab">
+                    <ion-label>Search</ion-label>
+                    <ion-icon name="search-outline" size="large"></ion-icon>                    
                 </ion-tab-button>
                 <ion-tab-button tab="stories" size="large">
                     <ion-label>Share a Story</ion-label>
@@ -214,7 +237,23 @@
                 </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>
-        </ion-content>
+        </ion-content>        
+          <ion-modal is-open="false" initial-breakpoint="0.25" backdrop-dismiss="false" backdrop-breakpoint="0.5" id="searchModal">
+              
+            <ion-content>
+                <ion-toolbar>
+                    <ion-title>Search photos</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-text color="black">
+                            <ion-button id="searchModalClose">CLOSE</ion-button>
+                        </ion-text>
+                    </ion-buttons>
+                </ion-toolbar>
+              <ion-searchbar placeholder="Search" id="searchBar"></ion-searchbar>
+              <ion-list id="resultsList"></ion-list>             
+              </ion-list>
+            </ion-content>
+          </ion-modal>
         <ion-modal id="storyModal">
             <ion-header>
                 <ion-toolbar id=storyToolbar>
