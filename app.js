@@ -847,9 +847,10 @@ fetch('config.json')
                 const owossoModal = document.getElementById("owossoModal");
 
                 async function openModal(attributes) {
-                  document.getElementById("modalTitle").textContent = attributes.title || "Untitled";
-                  document.getElementById("modalAuthor").textContent = `${attributes.author || ""} (${attributes.date_ || "undated"})`;
-                  document.getElementById("modalDescription").innerHTML = attributes.description || "No description available.";
+                  document.getElementById("modalTitle").textContent = attributes.title || "";
+                  document.getElementById("modalAuthor").textContent = `${attributes.author || ""}`;
+                  document.getElementById("modalDate").textContent = `${attributes.date_ || ""}`;
+                  document.getElementById("modalDescription").innerHTML = attributes.description || "";
                   document.getElementById("modalSource").textContent = attributes.source || "";
 
                   const gallery = document.getElementById("photoGallery");
@@ -1216,7 +1217,7 @@ fetch('config.json')
                     return;
                   }
 
-                  // --- Query layer for matches ---
+                  // Query the Owosso Layer
                   const safeValue = value.replace(/'/g, "''"); // escape single quotes
                   const query = owossoLayer.createQuery();
                   query.where = `(UPPER(title) LIKE '%${safeValue.toUpperCase()}%')`;
